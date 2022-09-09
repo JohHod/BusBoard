@@ -24,7 +24,7 @@ class APIHandler
     json.sort_by!{|bus| bus["timeToStation"]}
     json = json.slice(0,5)
     json.each { |bus|
-      puts("Number #{bus["lineId"].to_s} to #{bus["destinationName"].to_s} (#{bus["timeToStation"].to_s} minutes away)")
+      puts("Number #{bus["lineId"].to_s} to #{bus["destinationName"].to_s} (#{(bus["timeToStation"].to_i/60).to_s} minutes away)")
     }
   end
   def get_two_nearby_bus_stops(postcode)
