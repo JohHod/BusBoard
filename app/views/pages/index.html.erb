@@ -18,9 +18,8 @@
 
 
   <%if params[:error].blank? then %>
-    <br>this should only show if no error
-
-  <br>formatted bus data
+<!--    <br>this should only show if no error-->
+<!--  <br>formatted bus data-->
     <% @bus_data.each do |stop| %>
       <% if stop["stops_with_direction"].length > 0 then
         if stop["stops_with_direction"].any?{|stop| stop["bus_arrivals"].length > 0}%>
@@ -31,14 +30,17 @@
          <p><%="=== #{stop_with_direction["indicator"]} | Direction: #{stop_with_direction["compass_point"][-1]} towards #{stop_with_direction["towards"]}"%>
           <% stop_with_direction["bus_arrivals"].each do |bus| %>
         <p><%= "====== Number #{bus["line_id"].to_s} to #{bus["destination_name"].to_s} (#{bus["time_to_station"].to_s} minutes away)" %>
-              <% end %>
+        <% end %>
         <%end %>
        <%end %>
       <% end %>
       <% end %>
      <%end %>
 
-  Bus data below
+  <br>
+  <hr>
+  Bus data below for debug purposes
+  <br>
   <%= @bus_data %>
 
   <%end %>
