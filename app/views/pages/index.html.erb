@@ -1,0 +1,13 @@
+<h1>Bus Board</h1>
+<p>
+Postcode
+<%= form_tag("/buses", method: "get") do %>
+    <%= label_tag(:)
+  text_field(:post, :title, size:10,:value=>params[:postcode]) %>
+
+
+  <%if not params[:postcode].blank? then %>
+    this should only show if postcode not blank
+
+  <%end %>
+</p>
