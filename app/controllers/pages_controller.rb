@@ -3,9 +3,10 @@ require 'json'
 
 class PagesController < ApplicationController
   def index
-    puts("postcode: "+params[:postcode].to_s)
     api = APIHandler.new()
+    params[:postcode] = params[:postcode].upcase
     @bus_data = api.postcode_bus_info(params[:postcode])
+    if @bus_data == [] then params[:error] = 1 end
   end
   class APIHandler
     Coordinates = Struct.new(:latitude,:longitude)
@@ -16,7 +17,6 @@ class PagesController < ApplicationController
       bus_stops = get_two_nearby_bus_stops(postcode)
       if bus_stops == [] then return [] end
       bus_stops.each do |stop|
-        puts("#{stop["common_name"]} (#{stop["distance"].to_s} metres away)")
         stop["stops_with_direction"].each do |stop_with_direction|
           stop_with_direction["bus_arrivals"] = get_bus_arrivals(stop_with_direction["naptan_id"])
         end
@@ -33,10 +33,10 @@ class PagesController < ApplicationController
       output = json.map{|element| {"line_id"=>element["lineId"].to_s,
                                    "destination_name"=>element["destinationName"].to_s ,
                                    "time_to_station"=>(element["timeToStation"].to_i/60).to_s} }
-      puts(output)
       return output
     end
     def get_two_nearby_bus_stops(postcode)
+      postcode = ERB::Util::url_encode(postcode)
       coords = get_coordinates_of_postcode(postcode)
       if not coords == -1 then
         bus_stops = get_two_nearby_bus_stops_from_coord(coords)
@@ -70,6 +70,7 @@ class PagesController < ApplicationController
                                      "stops_with_direction" => element["children"].map{|child| {"naptan_id"=>child["naptanId"],
                                                                                                 "compass_point"=>if child["additionalProperties"].length>0 then child["additionalProperties"][0]["value"] else "error" end,
                                                                                                 "towards"=>if child["additionalProperties"].length > 1 then child["additionalProperties"][1]["value"] else "error" end,
+                                                                                                "indicator"=>child["indicator"],
                                                                                                 "bus_arrivals"=>[]}}}}
       output = output.slice(0,10)
       return output
