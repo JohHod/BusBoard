@@ -12,7 +12,7 @@ class APIHandler
     bus_stops.each do |stop|
       puts("#{stop["name"]} (#{stop["distance"].to_s} metres away)")
       stop["stops_with_direction"].each do |stop_with_direction|
-        puts("===Direction: #{stop_with_direction["naptanId"][-1]}")
+        puts("=== Direction: #{stop_with_direction["naptanId"][-1]}")
         bus_arrivals = get_bus_arrivals(stop_with_direction["naptanId"])
       end
     end
@@ -24,7 +24,7 @@ class APIHandler
     json.sort_by!{|bus| bus["timeToStation"]}
     json = json.slice(0,5)
     json.each { |bus|
-      puts("Number #{bus["lineId"].to_s} to #{bus["destinationName"].to_s} (#{(bus["timeToStation"].to_i/60).to_s} minutes away)")
+      puts("====== Number #{bus["lineId"].to_s} to #{bus["destinationName"].to_s} (#{(bus["timeToStation"].to_i/60).to_s} minutes away)")
     }
   end
   def get_two_nearby_bus_stops(postcode)
@@ -54,6 +54,8 @@ end
 api = APIHandler.new()
 # api.get_bus_arrivals("490008660N")
 api.postcode_bus_info("NW51TL")
+
+#monday: check if greenwood centre having no results is correct
 
 #Make it so that your console application takes a bus stop code as an input,
 # and prints out the next 5 buses at that stop, listing each bus’s line number, destination, and minutes until arrival.
