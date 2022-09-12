@@ -1,3 +1,9 @@
+<script type="application/javascript">
+    // setTimeout(function(){
+    //     window.location.reload();
+    // }, 30000);
+</script>
+
 <h1>Bus Board</h1>
 <%if params[:error].blank? then %>
   <p>Welcome to Bus Board! Enter your postcode below then click search to show bus arrivals in your area.</p>
@@ -21,9 +27,11 @@
       <hr>
        <p><strong><%="#{stop["common_name"]} (#{stop["distance"].to_s} metres away)"%></strong>
        <% stop["stops_with_direction"].each do |stop_with_direction| %>
+          <% if stop_with_direction["bus_arrivals"].length > 0 then %>
          <p><%="=== #{stop_with_direction["indicator"]} | Direction: #{stop_with_direction["compass_point"][-1]} towards #{stop_with_direction["towards"]}"%>
           <% stop_with_direction["bus_arrivals"].each do |bus| %>
         <p><%= "====== Number #{bus["line_id"].to_s} to #{bus["destination_name"].to_s} (#{bus["time_to_station"].to_s} minutes away)" %>
+              <% end %>
         <%end %>
        <%end %>
       <% end %>
