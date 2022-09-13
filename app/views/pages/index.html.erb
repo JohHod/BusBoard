@@ -17,13 +17,18 @@
     later.</p>
 <% end %>
 
+
 <%= form_with(url: "/buses", method: "get") do %>
-
   <%= label_tag(:postcode, "Enter Postcode:") %>
-  <%= text_field_tag(:postcode, params[:postcode], :class => "input is-primary") %>
-  <%= submit_tag("Search", :name => nil, :class => "button is-success") %>
-
+  <div class="field has-addons">
+    <div class="control">
+      <%= text_field_tag(:postcode, params[:postcode], :class => "input is-primary") %>
+    </div>
+    <div class="control">
+      <%= submit_tag("Search", :name => nil, :class => "button is-success control") %>
+    </div>
 <% end %>
+</div>
 
 
 <% if params[:error].blank? then %>
@@ -31,12 +36,27 @@
     <% if stop["stops_with_direction"].length > 0 then
          if stop["stops_with_direction"].any? { |stop| stop["bus_arrivals"].length > 0 } %>
         <hr>
-        <p><strong><%= "#{stop["common_name"]} (#{stop["distance"].to_s} metres away)" %></strong>
-          <% stop["stops_with_direction"].each do |stop_with_direction| %>
-            <% if stop_with_direction["bus_arrivals"].length > 0 then %>
-            <p><%= "=== #{stop_with_direction["indicator"]} | Direction: #{stop_with_direction["compass_point"][-1]} towards #{stop_with_direction["towards"]}" %>
+
+        <% stop["stops_with_direction"].each do |stop_with_direction| %>
+          <% if stop_with_direction["bus_arrivals"].length > 0 then %>
+            <p>
+              <strong><span class="has-background-grey has-text-white p-2 m-2"><%= "#{stop["common_name"]}" %></span></strong><%= "(#{stop["distance"].to_s} metres away)" %>
+            <p>
+              <strong><span class="has-background-danger has-text-white p-2 m-2"><%= "#{stop_with_direction["indicator"]}" %></span></strong>
+              <strong><span class="has-background-grey-lighter p-2 m-2"><%= "#{stop_with_direction["towards"]}" %></span></strong>
+              <!--              #=" Direction: #{stop_with_direction["compass_point"][-1]}-->
               <% stop_with_direction["bus_arrivals"].each do |bus| %>
-              <p><%= "====== Number #{bus["line_id"].to_s} to #{bus["destination_name"].to_s} (#{bus["time_to_station"].to_s} minutes away)" %>
+              <div class="has-background-black columns">
+                <p>
+                <div class="column is-2">
+                  <strong><span class="has-background-grey-darker has-text-white p-2 m-2"><%= "#{bus["destination_name"].to_s}" %></span></strong>
+                </div>
+                <div class="column">
+                  <strong><span class="has-background-grey-darker has-text-white p-2 m-2"><%= "#{bus["line_id"].to_s}" %></span></strong>
+                </div>
+
+                <!--                (#{bus["time_to_station"].to_s} minutes away)-->
+              </div>
             <% end %>
           <% end %>
         <% end %>

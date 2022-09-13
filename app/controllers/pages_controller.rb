@@ -72,7 +72,7 @@ class PagesController < ApplicationController
                                                                                                 "towards"=>if child["additionalProperties"].length > 1 then child["additionalProperties"][1]["value"] else "error" end,
                                                                                                 "indicator"=>child["indicator"],
                                                                                                 "bus_arrivals"=>[]}}}}
-      output = output.slice(0,10)
+      output = output.slice(0,3)
       return output
 
       # commonName
