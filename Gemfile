@@ -67,3 +67,6 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+#bulma css framework
+gem "bulma-rails", "~> 0.9.3"
