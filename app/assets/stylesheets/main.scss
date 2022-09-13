@@ -1,2 +1,66 @@
 @import '_layout';
 @import 'bulma';
+
+
+.bus {
+  border-radius: 50px 50px 15px 15px;
+  background-color: #da291c;
+  margin: 0px;
+  padding-top:15px;
+  max-width:800px
+}
+
+.screen {
+  border-radius: 10px;
+}
+
+.circle {
+  background-color: #d8301f;
+  border-radius: 30px;
+  width:60px;
+  height:60px;
+  line-height:40px;
+  text-align:center;
+  position:relative;
+  z-index:1;
+  transform:translateX(-28px);
+}
+
+
+.sign:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 370px;
+  background: #bebebe;
+  transform:translateY(0px);
+  margin-bottom:-363px;
+  z-index:-1;
+  position: relative;
+  border-top: 8px solid #d8301f;
+}
+
+.sign {
+  position:relative;
+  z-index:0;
+  margin-top:-20px;
+  min-height:199.5px;
+}
+
+.sign p:first-child {
+  border: 1px solid black;
+}
+
+.sign p:last-child {
+  border: 1px solid black;
+  border-width: 0px 1px 1px 1px;
+}
+
+.sky {
+  background-color: #e1fafa;
+}
+
+.road {
+  position: relative;
+  z-index:0;
+}

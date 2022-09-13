@@ -8,67 +8,94 @@
   </script>
 
 </head>
-<body>
-<h1>Bus Board</h1>
-<% if params[:error].blank? then %>
-  <p>Welcome to Bus Board! Enter your postcode below then click search to show bus arrivals in your area.</p>
-<% else %>
-  <p>Invalid postcode (<%= params[:postcode] %>) or API error. Please enter a new postcode to search or try again
-    later.</p>
-<% end %>
+<body class="is-mobile">
+<div class="p-4">
+  <div class="is-size-1 has-text-weight-bold has-text-centered "><p>Bus Board</div>
+  <% if params[:error].blank? then %>
+    <p>Welcome to Bus Board! Enter your postcode below then click search to show bus arrivals in your area.</p>
+  <% else %>
+    <p class="is-size-1">😨</p>
+    <p>Invalid postcode (<%= params[:postcode] %>) or API error. Please enter a new postcode to search or try again
+      later.</p>
+  <% end %>
 
 
-<%= form_with(url: "/buses", method: "get") do %>
-  <%= label_tag(:postcode, "Enter Postcode:") %>
-  <div class="field has-addons">
-    <div class="control">
-      <%= text_field_tag(:postcode, params[:postcode], :class => "input is-primary") %>
-    </div>
-    <div class="control">
-      <%= submit_tag("Search", :name => nil, :class => "button is-success control") %>
-    </div>
-<% end %>
+
+  <%= form_with(url: "/buses", method: "get") do %>
+
+    <div class="field has-addons">
+      <div class="control p-2">
+        <%= label_tag(:postcode, "Enter Postcode:") -%>
+      </div>
+      <div class="control">
+        <%= text_field_tag(:postcode, params[:postcode], :class => "input is-primary") %>
+      </div>
+      <div class="control">
+        <%= submit_tag("Search", :name => nil, :class => "button is-success control") %>
+      </div>
+  <% end %>
+  </div>
+
 </div>
-
 
 <% if params[:error].blank? then %>
   <% @bus_data.each do |stop| %>
     <% if stop["stops_with_direction"].length > 0 then
          if stop["stops_with_direction"].any? { |stop| stop["bus_arrivals"].length > 0 } %>
-        <hr>
+
 
         <% stop["stops_with_direction"].each do |stop_with_direction| %>
           <% if stop_with_direction["bus_arrivals"].length > 0 then %>
-            <p>
-              <strong><span class="has-background-grey has-text-white p-2 m-2"><%= "#{stop["common_name"]}" %></span></strong><%= "(#{stop["distance"].to_s} metres away)" %>
-            <p>
-              <strong><span class="has-background-danger has-text-white p-2 m-2"><%= "#{stop_with_direction["indicator"]}" %></span></strong>
-              <strong><span class="has-background-grey-lighter p-2 m-2"><%= "#{stop_with_direction["towards"]}" %></span></strong>
-              <!--              #=" Direction: #{stop_with_direction["compass_point"][-1]}-->
-              <% stop_with_direction["bus_arrivals"].each do |bus| %>
-              <div class="has-background-black columns">
-                <p>
-                <div class="column is-2">
-                  <strong><span class="has-background-grey-darker has-text-white p-2 m-2"><%= "#{bus["destination_name"].to_s}" %></span></strong>
-                </div>
-                <div class="column">
-                  <strong><span class="has-background-grey-darker has-text-white p-2 m-2"><%= "#{bus["line_id"].to_s}" %></span></strong>
-                </div>
+            <div class="column px-2 sky">
+              <div class="px-5">
+                <p class="circle has-text-white p-2 m-2 is-size-3 has-text-weight-bold is-family-monospace">
+                  <span><%= "#{stop_with_direction["indicator"]}" %></span>
+                <div class="sign is-inline-block">
+                  <p class="has-background-grey has-text-white p-2 mx-2 my is-size-2">
+                    <%= "#{stop["common_name"]}" %><%= " (#{stop["distance"].to_s} metres away)" %>
 
-                <!--                (#{bus["time_to_station"].to_s} minutes away)-->
+                  <p class="has-background-grey-lighter p-2 mx-2 my is-size-2">
+                    <%= "to #{stop_with_direction["towards"]}" %>
+                </div>
               </div>
+            </div>
+            <!--              #=" Direction: #{stop_with_direction["compass_point"][-1]}-->
+
+            <% stop_with_direction["bus_arrivals"].each do |bus| %>
+              <div class="columns px-2 has-background-grey-dark m-auto road py-2">
+                <div class="bus column">
+                  <div class="has-background-black p-5 m-2 screen">
+                    <p>
+                    <div class="columns">
+                      <div class="column">
+                        <p class="has-background-grey-darker has-text-white p-2 is-size-2">
+                          <span><%= "#{bus["destination_name"].to_s}" %></span>
+                      </div>
+                      <div class="column is-2">
+                        <p class="has-background-grey-darker has-text-white p-2 has-text-centered has-text-weight-bold is-size-2">
+                          <span><%= "#{bus["line_id"].to_s}" %></span>
+                      </div>
+                    </div>
+                    <!--                ( minutes away)-->
+                  </div>
+                </div>
+                <div class="column is-2 has-text-white is-size-3 has-text-centered">
+                  <p><%= "#{bus["time_to_station"].to_s}min away" %>
+                </div>
+              </div>
+
             <% end %>
+
           <% end %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
 
-  <br>
-  <hr>
-  Bus data below for debug purposes
-  <br>
-  <%= @bus_data %>
+<!--  <br>-->
+<!--  Bus data below for debug purposes-->
+<!--  <br>-->
+  <%#= @bus_data %>
 
 <% end %>
 </body>
