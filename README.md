@@ -1,3 +1,3 @@
 # Bus Board
 
-![image](https://user-images.githubusercontent.com/113037163/189962398-21b13073-dbbd-43ec-8c19-cfa40c3409f2.png)
+![image](https://user-images.githubusercontent.com/113037163/190137486-7028bde6-b99a-4eb1-a19f-6398f0d215bb.png)
